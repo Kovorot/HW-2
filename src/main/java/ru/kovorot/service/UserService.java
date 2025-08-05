@@ -1,21 +1,21 @@
 package ru.kovorot.service;
 
-import ru.kovorot.model.User;
+import ru.kovorot.dto.UserDTO;
+
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Простой сервис-слой для демонстрации к ДЗ.
  */
 public interface UserService {
 
-    Long createUser(User user);
+    UserDTO createUser(UserDTO userDTO);
 
-    Optional<User> getUserById(Long id);
+    UserDTO getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    void updateUser(User user);
+    UserDTO updateUser(Long id, UserDTO userDTO);
 
     void deleteUser(Long id);
 }
