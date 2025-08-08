@@ -1,10 +1,11 @@
-package ru.kovorot.service;
+package ru.kovorot.user.service.service;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.kovorot.dto.UserDTO;
-import ru.kovorot.model.User;
-import ru.kovorot.repository.UserRepository;
-import ru.kovorot.util.UserMapper;
+import ru.kovorot.user.service.dto.UserDTO;
+import ru.kovorot.user.service.model.User;
+import ru.kovorot.user.service.repository.UserRepository;
+import ru.kovorot.user.service.util.UserMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
@@ -24,7 +27,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
-        return userMapper.toDTO(userRepository.save(user));
+        User saved = userRepository.save(user);
+        sendKafkaEvent("user_created", saved.getEmail());
+        return userMapper.toDTO(saved);
     }
 
     @Override
@@ -54,6 +59,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        userRepository.findById(id).ifPresent(user -> {
+            userRepository.deleteById(id);
+            sendKafkaEvent("user_deleted", user.getEmail());
+        });
+    }
+
+    private void sendKafkaEvent(String eventType, String email) {
+        String message = String.format("{\"event\":\"%s\",\"email\":\"%s\"}", eventType, email);
+        kafkaTemplate.send("user_events", message);
     }
 }

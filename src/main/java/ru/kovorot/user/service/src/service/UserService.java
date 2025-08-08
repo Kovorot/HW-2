@@ -1,6 +1,6 @@
-package ru.kovorot.service;
+package ru.kovorot.user.service.service;
 
-import ru.kovorot.dto.UserDTO;
+import ru.kovorot.user.service.dto.UserDTO;
 
 import java.util.List;
 

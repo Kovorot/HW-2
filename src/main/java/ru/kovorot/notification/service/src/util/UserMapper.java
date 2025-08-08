@@ -1,8 +1,8 @@
-package ru.kovorot.util;
+package util;
 
 import org.modelmapper.ModelMapper;
-import ru.kovorot.dto.UserDTO;
-import ru.kovorot.model.User;
+import ru.kovorot.user.service.dto.UserDTO;
+import ru.kovorot.user.service.model.User;
 import org.springframework.stereotype.Component;
 
 @Component

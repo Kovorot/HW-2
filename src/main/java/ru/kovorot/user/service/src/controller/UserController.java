@@ -1,9 +1,9 @@
-package ru.kovorot.controller;
+package ru.kovorot.user.service.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.kovorot.dto.UserDTO;
-import ru.kovorot.service.UserService;
+import ru.kovorot.user.service.dto.UserDTO;
+import ru.kovorot.user.service.service.UserService;
 import java.util.List;
 
 @RestController

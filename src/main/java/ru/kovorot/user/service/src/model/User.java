@@ -1,32 +1,35 @@
-package ru.kovorot.dto;
+package ru.kovorot.user.service.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-public class UserDTO {
+@Entity
+@Table(name = "users")
+public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="name", nullable = false)
     private String name;
 
+    @Column(name="email", unique = true, nullable = false)
     private String email;
 
+    @Column(name="age")
     private Integer age;
 
-    private LocalDateTime createdAt;
-
-    public UserDTO() {
-    }
-
-    public UserDTO(Long id, String name, String email, Integer age, LocalDateTime createdAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.createdAt = createdAt;
-    }
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -59,5 +62,10 @@ public class UserDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + ", createdAt=" + createdAt;
     }
 }
