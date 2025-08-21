@@ -1,4 +1,4 @@
-package ru.kovorot.user.service.service;
+package service;
 
 import ru.kovorot.user.service.dto.UserDTO;
 

@@ -1,4 +1,4 @@
-package ru.kovorot.user.service.service;
+package service;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,10 @@ public class UserServiceImpl implements UserService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, KafkaTemplate<String, String> kafkaTemplate) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override

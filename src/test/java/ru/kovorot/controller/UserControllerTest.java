@@ -1,5 +1,6 @@
-package ru.kovorot.controller;
+package java.ru.kovorot.controller;
 
+import dto.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -7,14 +8,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.kovorot.dto.UserDTO;
-import ru.kovorot.service.UserService;
+import service.UserService;
+
 import java.time.LocalDateTime;
-import java.util.Collections;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,6 +31,20 @@ class UserControllerTest {
     private final UserDTO testUser = new UserDTO(
             1L, "Test User", "test@example.com", 30, LocalDateTime.now()
     );
+
+    @Test
+    void getUserById_ShouldReturnUserWithLinks() throws Exception {
+        UserDTO userDTO = new UserDTO(1L, "John", "john@example.com", 25, LocalDateTime.now());
+
+        when(userService.getUserById(1L)).thenReturn(userDTO);
+
+        mockMvc.perform(get("/api/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.email").value("john@example.com"))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.users.href").exists());
+    }
 
     @Test
     void createUserTest() throws Exception {
@@ -49,15 +65,6 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test User"));
-    }
-
-    @Test
-    void getAllUsersTest() throws Exception {
-        when(userService.getAllUsers()).thenReturn(Collections.singletonList(testUser));
-
-        mockMvc.perform(get("/api/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].age").value(30));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package ru.kovorot.user.service.util;
+package util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

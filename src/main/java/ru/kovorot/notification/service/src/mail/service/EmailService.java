@@ -4,11 +4,16 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+@Service
 public class EmailService {
 
     private final JavaMailSender mailSender;
 
     private final String FROM_EMAIL = "noreply@example.com";
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void sendRegistrationEmail(String toEmail) {
         sendEmail(toEmail, "Аккаунт создан", "Здравствуйте! Ваш аккаунт на сайте ваш сайт был успешно создан.");

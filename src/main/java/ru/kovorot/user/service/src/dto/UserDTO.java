@@ -1,8 +1,8 @@
-package ru.kovorot.user.service.dto;
+package dto;
 
 import java.time.LocalDateTime;
 
-public class UserDTO {
+public class UserDTO extends RepresentationModel<UserDTO> {
 
     private Long id;
 

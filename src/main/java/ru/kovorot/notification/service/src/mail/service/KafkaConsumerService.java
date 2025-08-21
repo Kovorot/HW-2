@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class KafkaConsumerService {
+
     private final EmailService emailService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public KafkaConsumerService(EmailService emailService) {

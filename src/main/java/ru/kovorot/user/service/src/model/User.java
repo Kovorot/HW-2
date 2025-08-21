@@ -1,4 +1,4 @@
-package ru.kovorot.user.service.model;
+package model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
